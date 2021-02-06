@@ -19,7 +19,7 @@ const App = () => {
 
   }
 
-
+ 
   useEffect(() => {
     let interval = null;
 
@@ -31,6 +31,7 @@ const App = () => {
       clearInterval(interval);
     }
 
+    // prevents memory leaks
     return () => clearInterval(interval);
   }, [timerOn]);
 
@@ -43,7 +44,7 @@ const App = () => {
       <button type="submit" onClick={() => handleTask()}>Add task</button>
       </div>
       <div id="display">
-           {/* add zero, than slice, for formatting */}
+           {/* add zero, plus slice, for formatting the counter*/}
         <span>{("0" + Math.floor((time / 3600000))).slice(-1)}:</span>
         <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
         <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
@@ -60,9 +61,7 @@ const App = () => {
         {!timerOn && time > 0 && (
           <button onClick={() => setTimerOn(true)}>Resume</button>
         )}
-
           { showTask && <h3>Current focus: {task}</h3> }
-
       </div>
     </div>
   );
