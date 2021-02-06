@@ -16,12 +16,15 @@ db = SQLAlchemy(app)
 def index():
     return render_template('index.html', token='flask-react-app')
 
+
+
 # Create database model
 class Task(db.Model):
     __tablename__ = "tasks"
     id = db.Column(db.Integer, primary_key=True)
     task_title = db.Column(db.String(100))
     task_description = db.Column(db.Text)
+
 
 if __name__ == '__main__':
     app.run(debug=True)
