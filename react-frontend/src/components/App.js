@@ -1,11 +1,24 @@
 import React, {useState, useEffect} from "react";
-import './App.css'
+import '../App.css';
 
 const App = () => {
   const [time, setTime] = useState(0);
   const [timerOn, setTimerOn] = useState(false);
-  const [taskName, setTaskName] = useState()
-  const [taskDescription, setTaskDescription] = useState()
+  const [inputValue, setInputValue] = useState("");
+  const [showTask, setShowTask] = useState(false);
+  const [task, setTask] = useState("");
+
+  const handleInput = (e) => {
+    setInputValue(e.target.value);  
+  }
+
+  const handleTask = () => {
+    setTask(inputValue)
+    setShowTask(true)
+    setInputValue("")
+
+  }
+
 
   useEffect(() => {
     let interval = null;
@@ -23,12 +36,14 @@ const App = () => {
 
 
   return (
-    <div className="Timers">
-      <h2>TimeTracker</h2>
-      {taskName && <h2>Task: {taskName} </h2>}
+    <div className="timers">
+      <h1>TimeTracker</h1>
+      <div className="focus">
+      <input type="text" placeholder="What are you working on?" value={inputValue} onChange={handleInput}/>
+      <button type="submit" onClick={() => handleTask()}>Add task</button>
+      </div>
       <div id="display">
-      <input type="text" placeholder="What are you working on?" value={taskName} onChange={e => setTaskName(e.target.value)}/>
-        {/* add zero, than slice, for formatting */}
+           {/* add zero, than slice, for formatting */}
         <span>{("0" + Math.floor((time / 3600000))).slice(-1)}:</span>
         <span>{("0" + Math.floor((time / 60000) % 60)).slice(-2)}:</span>
         <span>{("0" + Math.floor((time / 1000) % 60)).slice(-2)}</span>
@@ -36,7 +51,7 @@ const App = () => {
 
       <div id="buttons">
         {!timerOn && time === 0 && (
-          <button onClick={() => setTimerOn(true)}>Start</button>
+          <button id="start" onClick={() => setTimerOn(true)}>Start</button>
         )}
         {timerOn && <button onClick={() => setTimerOn(false)}>Stop</button>}
         {!timerOn && time > 0 && (
@@ -45,6 +60,9 @@ const App = () => {
         {!timerOn && time > 0 && (
           <button onClick={() => setTimerOn(true)}>Resume</button>
         )}
+
+          { showTask && <h3>Current focus: {task}</h3> }
+
       </div>
     </div>
   );
